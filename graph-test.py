@@ -56,19 +56,19 @@ class TestUndirectedGraph(unittest.TestCase):
 
     def test_load_graph_invalid_cost(self):
         with self.assertRaises(ValueError):
-            UndirectedGraph("graph-with-invalid-cost.csv")
+            UndirectedGraph("test/graph-with-invalid-cost.csv")
 
     def test_load_graph_invalid_line(self):
         with self.assertRaises(ValueError):
-            UndirectedGraph("graph-with-invalid-line.csv")
+            UndirectedGraph("test/graph-with-invalid-line.csv")
 
     def test_load_graph_conflicting_lines(self):
         with self.assertRaises(ValueError):
-            UndirectedGraph("graph-with-conflicting-lines.csv")
+            UndirectedGraph("test/graph-with-conflicting-lines.csv")
 
     def test_load_graph_duplicate_non_conflicting_lines(self):
         try:
-            UndirectedGraph("graph-with-duplicate-non-conflicting-lines.csv")
+            UndirectedGraph("test/graph-with-duplicate-non-conflicting-lines.csv")
         except ValueError:
             self.fail("Graph file contains duplicate, but non-conflicting edges.")
 
