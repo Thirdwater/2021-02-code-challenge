@@ -20,6 +20,8 @@ class UndirectedGraph:
                 node1, node2, cost = items
                 if not cost.isnumeric():
                     raise ValueError("Graph file contains non-numeric cost: " + cost)
+                if int(cost) < 0:
+                    raise ValueError("Graph file contains negative cost: " + cost)
                 if not node1.isnumeric():
                     self.add_node(node1)
                 if not node2.isnumeric():

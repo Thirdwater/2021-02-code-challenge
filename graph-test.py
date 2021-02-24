@@ -58,6 +58,10 @@ class TestUndirectedGraph(unittest.TestCase):
         with self.assertRaises(ValueError):
             UndirectedGraph("test/graph-with-invalid-cost.csv")
 
+    def test_load_graph_negative_cost(self):
+        with self.assertRaises(ValueError):
+            UndirectedGraph("test/graph-with-negative-cost.csv")
+
     def test_load_graph_invalid_line(self):
         with self.assertRaises(ValueError):
             UndirectedGraph("test/graph-with-invalid-line.csv")
