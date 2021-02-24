@@ -14,6 +14,7 @@ This is a coding challenge for a job application (Jirapat Treyanurak).
 ```bash
 python3 main.py
 ```
+![Example program flow](example.png)
 
 ## Test
 
