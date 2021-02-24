@@ -50,37 +50,37 @@ class UndirectedGraph:
             options.remove(min_option)
             path = min_option['path']
             cost = min_option['cost']
-            print("Expanding: ", path, cost)
+            #print("Expanding: ", path, cost)
             current_node = path[-1]
             if cost >= min_cost:
                 continue
 
             expansions = self.paths_from(current_node)
             for expansion in expansions:
-                print("Considering: ", expansion['path'], expansion['cost'])
+                #print("Considering: ", expansion['path'], expansion['cost'])
                 expansion_node = expansion['path'][-1]
                 if expansion_node in visited:
-                    print("\tAlready visited: ", expansion_node)
+                    #print("\tAlready visited: ", expansion_node)
                     continue
                 else:
                     visited.append(expansion_node)
-                    print("\tVisited: ", visited)
+                    #print("\tVisited: ", visited)
 
                 next_path = path.copy()
                 next_path.append(expansion_node)
                 next_cost = cost + expansion['cost']
                 if next_cost > min_cost:
-                    print("\tToo expensive: ", next_cost)
+                    #print("\tToo expensive: ", next_cost)
                     continue
                 
                 if expansion_node == end:
-                    print("\tEnd node")
+                    #print("\tEnd node")
                     if next_cost < min_cost:
-                        print("\tUpdate min: ", next_cost)
+                        #print("\tUpdate min: ", next_cost)
                         min_cost = next_cost
                         min_path = next_path
                 else:
-                    print("\tAdd to option: ", next_path, next_cost)
+                    #print("\tAdd to option: ", next_path, next_cost)
                     next_option = {'path': next_path, 'cost': next_cost}
                     options.append(next_option)
         
