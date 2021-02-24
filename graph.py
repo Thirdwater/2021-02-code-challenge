@@ -16,10 +16,16 @@ class UndirectedGraph:
             for line in graph_file:
                 items = line.strip().split(',')
                 if len(items) != 3:
-                    raise ValueError("Provided graph file contains an invalid line: " + line)
+                    raise ValueError("Graph file contains an invalid line: " + line)
                 node1, node2, cost = items
-                self.add_node(node1)
-                self.add_node(node2)
+                if not cost.isnumeric():
+                    raise ValueError("Graph file contains non-numeric cost: " + cost)
+                if not node1.isnumeric():
+                    self.add_node(node1)
+                if not node2.isnumeric():
+                    self.add_node(node2)
+                if node2 in self.edges[node1] and int(cost) != self.edges[node1][node2]:
+                    raise ValueError("Graph file contains conflicting edge: " + line)
                 self.add_edge(node1, node2, cost)
 
     def add_node(self, name):
@@ -28,11 +34,15 @@ class UndirectedGraph:
             self.edges[name] = {}
 
     def add_edge(self, node1, node2, cost):
-        self.edges[node1][node2] = int(cost)
-        self.edges[node2][node1] = int(cost)
+        if node1 in self.nodes and node2 in self.nodes:
+            self.edges[node1][node2] = int(cost)
+            self.edges[node2][node1] = int(cost)
 
     def shortest_path(self, start, end):
         assert start in self.nodes and end in self.nodes
+
+        if start == end:
+            return {'path': [start], 'cost': 0}
 
         if end in self.edges[start]:
             return {'path': [start, end], 'cost': self.edges[start][end]}
@@ -50,37 +60,29 @@ class UndirectedGraph:
             options.remove(min_option)
             path = min_option['path']
             cost = min_option['cost']
-            #print("Expanding: ", path, cost)
             current_node = path[-1]
             if cost >= min_cost:
                 continue
 
             expansions = self.paths_from(current_node)
             for expansion in expansions:
-                #print("Considering: ", expansion['path'], expansion['cost'])
                 expansion_node = expansion['path'][-1]
                 if expansion_node in visited:
-                    #print("\tAlready visited: ", expansion_node)
                     continue
                 else:
                     visited.append(expansion_node)
-                    #print("\tVisited: ", visited)
 
                 next_path = path.copy()
                 next_path.append(expansion_node)
                 next_cost = cost + expansion['cost']
                 if next_cost > min_cost:
-                    #print("\tToo expensive: ", next_cost)
                     continue
                 
                 if expansion_node == end:
-                    #print("\tEnd node")
                     if next_cost < min_cost:
-                        #print("\tUpdate min: ", next_cost)
                         min_cost = next_cost
                         min_path = next_path
                 else:
-                    #print("\tAdd to option: ", next_path, next_cost)
                     next_option = {'path': next_path, 'cost': next_cost}
                     options.append(next_option)
         
